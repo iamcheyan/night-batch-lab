@@ -15,6 +15,7 @@ input → work → output → archive / upload
 
 The examples are intentionally old-fashioned. They use fixed paths relative
 to the project, Japanese log messages, `ERRORLEVEL`, `CALL`, `GOTO`, `FOR`,
+delayed variable expansion, lock directories, staged files, status files,
 shell exit codes, sequential files, and COBOL `COPY`/`UNSTRING`-style batch
 processing. They are for learning and simulation, not for connecting to a
 real financial device or production transfer server.
@@ -33,7 +34,8 @@ workflow: `windows-batch/csv2xls-upload.bat` processes exactly ten numbered
 CSV files (`000000001` through `000000010`), calls an external `CSV2XLS.js`
 converter for each one, and uploads each generated XLS file to a Linux host.
 The ten calls are written one by one on purpose; this mirrors operations code
-where each job step has its own return-code checkpoint.
+where each job step has its own return-code checkpoint. A preflight loop is
+used only to inspect all inputs before the coded job steps begin.
 
 The Windows and Linux entry points implement the same workflow independently.
 The COBOL program is shared by both examples.
@@ -75,6 +77,12 @@ windows-batch\nightly-main.bat
 The scripts use `%~dp0` so they can be started from any current directory.
 The upload step is local simulation by default. In a controlled environment,
 the ten-file job can use the site-approved Windows `ftp.exe` client.
+
+The longer Batch example also demonstrates business-day arguments, directory
+creation, input-size checks, configurable overwrite behavior, optional
+continue-on-error behavior, per-job status records, logs, output archiving,
+and explicit failure codes. These are intentionally included as editor and
+plugin test cases, not as a recommendation to copy production credentials.
 
 For the ten-file conversion exercise, set the converter and upload mode as
 appropriate:

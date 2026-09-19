@@ -44,6 +44,8 @@ For each lesson:
   files with ten explicit calls. Keep this repetition: it models the coded
   job steps used in the target work environment.
 - `scripts/linux/` contains Linux-specific orchestration examples.
+- `tests/` contains lightweight static contract checks for the long-form
+  Windows Batch examples; it does not require Windows or an FTP server.
 - `src/cobol/` contains COBOL programs and Copybooks.
 - `data/` contains fake training data only. Never add customer data,
   credentials, production hostnames, or real account information.

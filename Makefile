@@ -11,6 +11,7 @@ all: check
 
 check:
 	@bash -n scripts/linux/*.sh
+	@tests/test-csv2xls-upload.sh
 	@cobc -fsyntax-only -I src/cobol/copybooks src/cobol/NIGHTSETTLE.COB
 	@echo "check: OK"
 
