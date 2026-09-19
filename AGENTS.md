@@ -40,6 +40,9 @@ For each lesson:
 ## Repository boundaries
 
 - `windows-batch/` contains Windows-specific orchestration examples.
+- `windows-batch/csv2xls-upload.bat` intentionally processes ten numbered CSV
+  files with ten explicit calls. Keep this repetition: it models the coded
+  job steps used in the target work environment.
 - `scripts/linux/` contains Linux-specific orchestration examples.
 - `src/cobol/` contains COBOL programs and Copybooks.
 - `data/` contains fake training data only. Never add customer data,
@@ -54,6 +57,9 @@ For each lesson:
 - Do not add real SFTP credentials or production commands.
 - Every script must use explicit return codes and stop on failed required
   steps.
+- External converters and transfer clients must be injected through an
+  environment variable or a documented command contract; do not commit them
+  when they belong to a real site.
 - Archive operations must be reversible during practice.
 - Keep Japanese log messages, because reading operational Japanese is part of
   the exercise.

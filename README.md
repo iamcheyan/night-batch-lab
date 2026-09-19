@@ -28,6 +28,13 @@ real financial device or production transfer server.
 5. Simulate an SFTP upload by copying the report into `data/remote/`.
 6. Write a Japanese log and return a non-zero code when a step fails.
 
+There is also a deliberately explicit Windows job for a common legacy
+workflow: `windows-batch/csv2xls-upload.bat` processes exactly ten numbered
+CSV files (`000000001` through `000000010`), calls an external `CSV2XLS.js`
+converter for each one, and uploads each generated XLS file to a Linux host.
+The ten calls are written one by one on purpose; this mirrors operations code
+where each job step has its own return-code checkpoint.
+
 The Windows and Linux entry points implement the same workflow independently.
 The COBOL program is shared by both examples.
 
@@ -68,6 +75,18 @@ windows-batch\nightly-main.bat
 The scripts use `%~dp0` so they can be started from any current directory.
 The upload step is local simulation; replace it with the site-approved SFTP
 client command only in a controlled environment.
+
+For the ten-file conversion exercise, set the converter and upload mode as
+appropriate:
+
+```bat
+set CSV2XLS_JS=C:\tools\CSV2XLS.js
+set UPLOAD_MODE=simulate
+windows-batch\csv2xls-upload.bat
+```
+
+Use `UPLOAD_MODE=ssh` only with an approved host, destination, and SSH agent.
+The repository never contains those values.
 
 ## Lessons
 
