@@ -25,7 +25,7 @@ real financial device or production transfer server.
 2. Run the COBOL settlement processor.
 3. Check the generated report.
 4. Archive the input and output using the business date.
-5. Simulate an SFTP upload by copying the report into `data/remote/`.
+5. Simulate an FTP upload by copying the report into `data/remote/`.
 6. Write a Japanese log and return a non-zero code when a step fails.
 
 There is also a deliberately explicit Windows job for a common legacy
@@ -73,8 +73,8 @@ windows-batch\nightly-main.bat
 ```
 
 The scripts use `%~dp0` so they can be started from any current directory.
-The upload step is local simulation; replace it with the site-approved SFTP
-client command only in a controlled environment.
+The upload step is local simulation by default. In a controlled environment,
+the ten-file job can use the site-approved Windows `ftp.exe` client.
 
 For the ten-file conversion exercise, set the converter and upload mode as
 appropriate:
@@ -85,8 +85,20 @@ set UPLOAD_MODE=simulate
 windows-batch\csv2xls-upload.bat
 ```
 
-Use `UPLOAD_MODE=ssh` only with an approved host, destination, and SSH agent.
-The repository never contains those values.
+For an approved FTP endpoint, set the connection values outside the repository:
+
+```bat
+set UPLOAD_MODE=ftp
+set FTP_HOST=approved-linux-host
+set FTP_USER=approved-user
+set FTP_PASSWORD=provided-out-of-band
+set FTP_TARGET=/var/tmp/approved-directory
+windows-batch\csv2xls-upload.bat
+```
+
+Each numbered job creates one temporary FTP command file, uploads one XLS
+file, checks the FTP return code, and removes the command file. There is no
+upload loop.
 
 ## Lessons
 
@@ -107,6 +119,6 @@ are all useful in this project.
 ## Safety
 
 This repository contains fake account numbers and local upload simulation. It
-does not implement encryption, production authentication, real SFTP, device
-control, or settlement authorization. Never put real customer data or real
-credentials in this project.
+does not implement encryption, production authentication, device control, or
+settlement authorization. Never put real customer data or real credentials in
+this project.

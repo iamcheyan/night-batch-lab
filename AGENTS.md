@@ -53,11 +53,12 @@ For each lesson:
 
 ## Safety rules
 
-- Upload is always a local simulation into `data/remote/`.
-- Do not add real SFTP credentials or production commands.
+- The normal nightly job uses local upload simulation into `data/remote/`.
+- The ten-file exercise may contain the documented FTP command contract, but
+  never add real FTP credentials, production hosts, or customer data.
 - Every script must use explicit return codes and stop on failed required
   steps.
-- External converters and transfer clients must be injected through an
+- External converters and FTP connection values must be injected through an
   environment variable or a documented command contract; do not commit them
   when they belong to a real site.
 - Archive operations must be reversible during practice.

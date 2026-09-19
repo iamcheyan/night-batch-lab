@@ -1,8 +1,9 @@
-# 07 — Ten CSV files, XLS conversion, and Linux transfer
+# 07 — Ten CSV files, XLS conversion, and FTP transfer to Linux
 
 `windows-batch/csv2xls-upload.bat` models a job often found around legacy
 devices: ten separately numbered input files arrive, each is converted by a
-site-provided JavaScript program, and each result is sent to a Linux server.
+site-provided JavaScript program, and each result is sent to a Linux server by
+FTP.
 
 The files are:
 
@@ -47,15 +48,23 @@ set UPLOAD_MODE=simulate
 ```
 
 Generated XLS files are copied to `data/remote/linux/`. The production-shaped
-branch uses OpenSSH `scp`:
+branch uses the Windows `ftp.exe` client:
 
 ```bat
-set UPLOAD_MODE=ssh
-set LINUX_HOST=operator@approved-host
-set LINUX_TARGET=/var/tmp/approved-directory
+set UPLOAD_MODE=ftp
+set FTP_HOST=approved-linux-host
+set FTP_USER=approved-user
+set FTP_PASSWORD=provided-out-of-band
+set FTP_TARGET=/var/tmp/approved-directory
 ```
 
-Never commit real hosts, account names, keys, passwords, or customer data.
+For every numbered file, the batch script writes a temporary FTP command file
+containing `open`, `user`, `binary`, `cd`, `lcd`, `put`, and `bye`, invokes
+`ftp.exe` once, checks its return code, and deletes the command file. This is
+ten separate FTP uploads, written as ten explicit job steps; no `FOR` loop is
+used for conversion or upload.
+
+Never commit real hosts, account names, passwords, or customer data.
 
 ## Practice questions
 

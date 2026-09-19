@@ -14,5 +14,7 @@ Read the script from top to bottom, then trace each `exit /b` value. In a
 real site, an outer scheduler may interpret the return code and start an
 operator notification or rerun procedure.
 
-The upload script only copies to `data/remote/`. It is deliberately not an
-SFTP client.
+The normal training mode only copies to `data/remote/`. The ten-file
+`csv2xls-upload.bat` exercise also documents a controlled FTP mode using the
+Windows `ftp.exe` client; it uploads each generated XLS file in its own
+explicit job step and does not use a loop.
