@@ -118,11 +118,19 @@ Read these in order:
 4. [COBOL processing](docs/04-cobol-processing.md)
 5. [Files, logs, and return codes](docs/05-files-logs-and-codes.md)
 6. [Failure recovery and rerun](docs/06-failure-recovery.md)
+7. [CSV conversion and Linux transfer](docs/07-csv2xls-linux-transfer.md)
+8. [Editor context fixtures](docs/08-editor-context-fixtures.md)
 
 The companion `cobol.nvim` plugin can be used while editing
 `src/cobol/NIGHTSETTLE.COB`: fixed-format guides, folding, Copybook navigation,
 PIC calculations, completion, diagnostics, and the COBOL context statusline
 are all useful in this project.
+
+The `examples/` directory contains small Python, JavaScript, TypeScript, Java,
+Go, Ruby, SQL, and HTML files. They are intentionally varied editor fixtures:
+open them in Neovim to exercise Tree-sitter parsing and the generic
+`contextline.nvim` statusline provider while working through the night-batch
+workflow. See [Editor context fixtures](docs/08-editor-context-fixtures.md).
 
 ## Safety
 
