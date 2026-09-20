@@ -4,8 +4,8 @@
 > 🏆 **离线通关题库**：对照 [`WORKBOOK.md`](file:///home/tetsuya/development/night-batch-lab/WORKBOOK.md) 进行 32 道实战关卡逐题演练！  
 > 运行演练：`cd /home/tetsuya/development/night-batch-lab && nvim examples/playground/main.py`
 
-当前您的 Neovim 配置中一共安装并运行了 **41 个插件**（由 `Lazy.nvim` 统一管理）。  
-经过架构精简与去重，剔除了重叠的搜索与 Git 预览冗余，保留最纯粹高效的现代化工具链。本手册将这 41 个插件划分为 **8 大核心体系**，列出每个插件的作用、核心快捷键，并在代码文件中为您设计了对应的练习场景。
+当前您的 Neovim 配置中一共安装并运行了 **42 个插件**（由 `Lazy.nvim` 统一管理）。  
+经过架构精简与去重，剔除了重叠的搜索与 Git 预览冗余，保留最纯粹高效的现代化工具链。本手册将这 42 个插件划分为 **9 大核心体系**，列出每个插件的作用、核心快捷键，并在代码文件中为您设计了对应的练习场景。
 
 ---
 
@@ -19,7 +19,8 @@
 7. [第六模块：LSP 智能补全、诊断与格式化 (6 个)](#第六模块lsp-智能补全诊断与格式化-6-个)
 8. [第七模块：自研与私有专属插件 (5 个)](#第七模块自研与私有专属插件-5-个)
 9. [第八模块：底层基础设施与依赖库 (6 个)](#第八模块底层基础设施与依赖库-6-个)
-10. [日常高频快捷键速查终极便签](#日常高频快捷键速查终极便签)
+10. [第九模块：TODO 标记与代码审查 (1 个)](#第九模块todo-标记与代码审查-1-个)
+11. [日常高频快捷键速查终极便签](#日常高频快捷键速查终极便签)
 
 ---
 
@@ -35,7 +36,8 @@
 | **LSP 智能体与补全** | 6 | `blink.cmp`, `nvim-lspconfig`, `mason`, `conform.nvim`, `fidget` 等 |
 | **自研与私有扩展** | 5 | `contextline.nvim`, `VimQuest`, `which-key`, `auto-session`, `grug-far` |
 | **基础设施与依赖库** | 6 | `lazy.nvim`, `plenary`, `nui`, `sqlite.lua`, `promise-async` 等 |
-| **总计** | **41 个** | 极致精简，高内聚低冗余 |
+| **TODO 标记与代码审查** | 1 | `todo-comments.nvim` |
+| **总计** | **42 个** | 极致精简，高内聚低冗余 |
 
 ## 🌟 跨文件多模块项目级实战演练 (Multi-File Realistic Architecture)
 
@@ -369,6 +371,81 @@ examples/playground/
   <leader>gD         查看当前文件的 Git 历史演变版本
   <leader>gq         一键退出 Diffview
   <leader>gg         呼出完整的终端 Lazygit
+
+【TODO 标记与代码审查】
+  ]t / [t            跳到下一个 / 上一个 TODO 标记
+  <leader>st         ★ 打开全项目 TODO 列表 (Snacks Picker)
+  <leader>sT         只显示 TODO / FIX / FIXME 类型
+```
+
+---
+
+## 第九模块：TODO 标记与代码审查 (1 个)
+
+> **适用场景**：AI 写完代码后，在审查过程中随手标记"待确认""有问题""回头再看"的位置，形成可追踪的任务列表。
+
+### todo-comments.nvim
+
+在代码注释中写特定关键词，插件自动**彩色高亮**，并可用 Snacks Picker **全局搜索**。
+
+#### 支持的关键词
+
+| 关键词 | 颜色 | 含义 | 别名 |
+|---|---|---|---|
+| `TODO` | 🔵 蓝 | 待办事项 | — |
+| `FIX` | 🔴 红 | 需要修复的 bug | `FIXME`, `BUG`, `ISSUE` |
+| `HACK` | 🟡 橙 | 临时方案，之后要改 | — |
+| `WARN` | 🟡 橙 | 警告、注意 | `WARNING`, `XXX` |
+| `NOTE` | 🟢 绿 | 解释说明 | `INFO` |
+| `PERF` | ⚪ 灰 | 性能优化点 | `OPTIM`, `OPTIMIZE` |
+| `REVIEW` | 🟣 紫 | **AI 生成代码待人工审查** | `CHECK` |
+| `TEST` | 🟣 紫 | 测试相关 | `TESTING`, `PASSED`, `FAILED` |
+
+#### 写法示例
+
+```python
+# TODO: 这个函数需要添加错误处理
+
+# FIXME: 边界条件有问题，输入为空时会崩溃
+
+# REVIEW: AI 生成的逻辑，还没确认是否正确
+def calculate_tax(income):
+    return income * 0.3
+
+# HACK: 临时绕过 API 限速，之后换成队列方案
+import time; time.sleep(1)
+
+# NOTE: 这里必须用 UTC 时间，不能用本地时间
+```
+
+```lua
+-- TODO: 支持更多颜色格式
+
+-- REVIEW: 这段 AI 写的鼠标处理逻辑，需要测试边缘情况
+```
+
+```bash
+# FIXME: 在 macOS 上路径处理有问题
+```
+
+#### 快捷键
+
+| 按键 | 功能 |
+|---|---|
+| `]t` | 跳到**下一个** TODO 标记 |
+| `[t` | 跳到**上一个** TODO 标记 |
+| `<leader>st` | 打开**全项目** TODO 列表（Snacks Picker） |
+| `<leader>sT` | 只显示 `TODO` / `FIX` / `FIXME` |
+
+#### 典型工作流（配合 AI Agent）
+
+```
+1. AI 写完一批代码
+2. 打开文件审查，遇到不确定的地方加 # REVIEW:
+3. 审查完毕，按 <leader>st 打开全部标记列表
+4. 在列表里逐个跳转处理，确认后删掉注释
+5. 处理完的 REVIEW 变成 TODO（需要改）或直接删除（没问题）
 ```
 
 欢迎现在就执行 `nvim examples/ui_playground.py`，逐项尝试上述所有快捷键！
+
