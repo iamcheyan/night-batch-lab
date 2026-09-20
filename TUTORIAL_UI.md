@@ -1,7 +1,8 @@
 # Neovim 全套 45 个插件实战与练习全景手册 (Complete Neovim Plugins Guide)
 
-> 本仓库配套演练代码：[`examples/ui_playground.py`](file:///home/tetsuya/development/night-batch-lab/examples/ui_playground.py)  
-> 运行演练：`cd /home/tetsuya/development/night-batch-lab && nvim examples/ui_playground.py`
+> 本仓库配套演练代码：[`examples/playground/main.py`](file:///home/tetsuya/development/night-batch-lab/examples/playground/main.py) 与 [`examples/ui_playground.py`](file:///home/tetsuya/development/night-batch-lab/examples/ui_playground.py)  
+> 🏆 **离线通关题库**：对照 [`WORKBOOK.md`](file:///home/tetsuya/development/night-batch-lab/WORKBOOK.md) 进行 32 道实战关卡逐题演练！  
+> 运行演练：`cd /home/tetsuya/development/night-batch-lab && nvim examples/playground/main.py`
 
 当前您的 Neovim 配置中一共安装并运行了 **45 个插件**（由 `Lazy.nvim` 统一管理）。  
 为了让您不再“装了好多插件却不知道怎么用”，本手册将这 45 个插件划分为 **8 大核心体系**，列出每个插件的作用、核心快捷键，并在代码文件中为您设计了对应的练习场景。

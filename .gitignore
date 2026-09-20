@@ -7,3 +7,5 @@ data/archive/*
 !data/remote/.gitkeep
 !data/archive/.gitkeep
 !logs/.gitkeep
+__pycache__/
+*.pyc

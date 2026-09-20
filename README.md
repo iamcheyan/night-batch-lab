@@ -132,6 +132,8 @@ open them in Neovim to exercise Tree-sitter parsing and the generic
 `contextline.nvim` statusline provider while working through the night-batch
 workflow. See [Editor context fixtures](docs/08-editor-context-fixtures.md).
 
+For a complete hands-on interactive tutorial and offline practice quest covering all 45 Neovim plugins, see [TUTORIAL_UI.md](TUTORIAL_UI.md) and [WORKBOOK.md](WORKBOOK.md) (paired with `examples/playground/` and `examples/ui_playground.py`).
+
 ## Safety
 
 This repository contains fake account numbers and local upload simulation. It
