@@ -1,146 +1,253 @@
 #!/usr/bin/env python3
 """
-Neovim UI & 交互增强功能实战游乐场 (UI Playground)
--------------------------------------------------------------
-本文件专为体验和练习以下功能设计：
-1. mini.hipatterns     - 十六进制颜色代码背景直观渲染
-2. rainbow-delimiters  - 彩虹括号嵌套高亮 (逐层变色)
-3. nvim-ufo            - 语法高亮代码折叠 + 悬浮预览 (zp / zR / zM)
-4. gitsigns            - 浅灰色行尾 Git Blame 与修改标记
-5. diffview.nvim       - 专业 Git 对比工作区 (<leader>gd / <leader>gD)
-6. satellite.nvim      - 传统 UI 灰色背景轨道 + 亮黄色滚动条滑块
+================================================================================
+Neovim 全插件全功能实战演练场 (Full Plugins Playground)
+================================================================================
+本文件包含了为您已配置的全部 45 个插件精心设计的练习场景。
+请对照 TUTORIAL_UI.md 教程文档，按模块逐一演练！
+
+模块速查索引：
+  - 场景 01: 颜色代码背景预览与调色板 (mini.hipatterns, ccc.nvim)
+  - 场景 02: 彩虹嵌套括号深度分色 (rainbow-delimiters.nvim)
+  - 场景 03: 现代语法代码折叠与窥视 (nvim-ufo)
+  - 场景 04: 屏幕极速跳跃与目标直达 (flash.nvim)
+  - 场景 05: 搜索结果透镜与计数 (nvim-hlslens)
+  - 场景 06: 增强文本对象快速选择 (mini.ai, nvim-treesitter-textobjects)
+  - 场景 07: 多光标并发编辑 (vim-visual-multi)
+  - 场景 08: 剪贴板历史与循环粘贴 (yanky.nvim)
+  - 场景 09: 代码大纲与符号导航 (aerial.nvim, contextline.nvim)
+  - 场景 10: 自动补全与括号配对 (blink.cmp, mini.pairs)
+  - 场景 11: Git 行尾 Blame 与修改块 (gitsigns.nvim, diffview.nvim)
+================================================================================
 """
 
+import math
+import os
+import sys
 import time
-from typing import Any, Dict, List, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 
 
 # ==============================================================================
-# 1. 颜色高亮演示 (mini.hipatterns)
+# 场景 01: 颜色代码背景预览与拾取转换 (mini.hipatterns & ccc.nvim)
 # ------------------------------------------------------------------------------
-# 观察：下面的十六进制 HEX 颜色代码，背景已经直接被渲染成了该颜色的真实色彩！
+# 【体验 1 - mini.hipatterns】：
+#   无需按键，观察下方字典中的 HEX 颜色，文本背景已经直接呈现其真实颜色！
+# 【体验 2 - ccc.nvim】：
+#   把光标移动到任意颜色上，输入命令 `:CccPick`，会弹出一个交互式色盘；
+#   或者输入 `:CccConvert`，可直接在 HEX / RGB / HSL 之间循环转换格式！
 # ==============================================================================
-THEME_PALETTE: Dict[str, str] = {
-    "fresh_yellow": "#ffff00",   # 亮黄色：关键字、函数、滚动条滑块
-    "fresh_cyan":   "#00ffff",   # 青色：关键字、边框、光标
-    "fresh_green":  "#00cd00",   # 绿色：字符串、Git Add
-    "fresh_red":    "#ff5050",   # 红色：错误提示、Git Delete
-    "fresh_orange": "#ff9900",   # 橙色：类型定义、操作符
-    "fresh_blue":   "#569cd6",   # 蓝色：辅助标识、选择背景
-    "gray_track":   "#25252a",   # 暗灰：滚动条背景轨道
-    "gray_split":   "#333338",   # 柔和灰：垂直分割线
-    "white_text":   "#ffffff",   # 纯白：主前景色
+COLOR_SHOWCASE: Dict[str, str] = {
+    "fresh_yellow": "#ffff00",  # 主题亮黄 (Fresh Yellow)
+    "fresh_cyan":   "#00ffff",  # 主题青色 (Fresh Cyan)
+    "fresh_green":  "#00cd00",  # 语法绿色 (Fresh Green)
+    "fresh_red":    "#ff5050",  # 警告红色 (Fresh Red)
+    "fresh_orange": "#ff9900",  # 提示橙色 (Fresh Orange)
+    "fresh_blue":   "#569cd6",  # 语义蓝色 (Fresh Blue)
+    "fresh_purple": "#c586c0",  # 装饰紫色 (Fresh Purple)
+    "track_gray":   "#25252a",  # 滚动条轨道深灰色
+    "split_gray":   "#333338",  # 窗口垂直分割线
+    "white_text":   "#ffffff",  # 主前景色
 }
 
 
 # ==============================================================================
-# 2. 彩虹嵌套括号演示 (rainbow-delimiters)
+# 场景 02: 彩虹嵌套括号深度分色 (rainbow-delimiters.nvim)
 # ------------------------------------------------------------------------------
-# 观察：从外到内，每一层的 ()、[]、{} 括号都会轮转不同的主题颜色：
-# 黄色 -> 青色 -> 蓝色 -> 橙色 -> 绿色 -> 紫色 -> 红色
+# 【体验】：
+#   观察下方多层嵌套字典与元组。每一层的 ()、[]、{} 均按照语法深度被赋予不同颜色：
+#   第1层(黄) -> 第2层(青) -> 第3层(蓝) -> 第4层(橙) -> 第5层(绿) -> 第6层(紫) -> 第7层(红)
+#   把光标放在任意一个括号上，其配对括号高亮相同颜色，嵌套层次清晰可见。
 # ==============================================================================
-def demo_nested_rainbow_structures() -> Dict[str, Any]:
-    """返回深度嵌套的多层数据结构，测试彩虹括号的层级着色。"""
-    config_tree = {
-        "pipeline": {
-            "stages": [
+def sample_rainbow_delimiters() -> Dict[str, Any]:
+    nested_pipeline = {
+        "level_1_dict": {
+            "level_2_list": [
                 (
-                    "extract",
-                    [
-                        {"source": "nightly_ftp", "ports": [21, 2121]},
-                        {"timeout": (30 + (5 * 2)), "retries": [1, 2, [3, 4]]},
-                    ],
-                ),
-                (
-                    "transform",
-                    [
-                        {
-                            "matrix": [
-                                [1, 2, [3, (4, 5)]],
-                                [6, 7, [8, (9, 10)]],
-                            ],
-                            "rules": {
-                                "validate": ("strict", {"allow_null": False}),
-                            },
-                        }
-                    ],
-                ),
-            ],
-            "metadata": {
-                "tags": ["batch", "nightly", ("v1", ["alpha", "beta"])],
-            },
+                    "level_3_tuple",
+                    {
+                        "level_4_subdict": [
+                            (
+                                "level_5_subtuple",
+                                {"level_6_deep": [("level_7_target", 2026)]},
+                            )
+                        ]
+                    },
+                )
+            ]
         }
     }
-    return config_tree
+    return nested_pipeline
 
 
 # ==============================================================================
-# 3. 现代代码折叠演示 (nvim-ufo)
+# 场景 03: 现代语法代码折叠与悬浮窥视 (nvim-ufo)
 # ------------------------------------------------------------------------------
-# 体验：
-#  - 将光标移动到下方类或方法的 def / class 这一行
-#  - 按 `zc`：折叠当前代码块（查看右侧精美的 `⋯ N lines 󰁂` 胶囊徽标）
-#  - 按 `zp`：悬浮窗口直接窥探内部代码（无需真正展开）
-#  - 按 `zo`：重新展开
-#  - 按 `zM`：一键收起全文所有方法与类
-#  - 按 `zR`：一键展开全文所有折叠
+# 【体验快捷键】：
+#   1. 光标放在下面的 `def long_calculation_algorithm` 函数声明行。
+#   2. 按 `zc`：折叠当前函数，右侧出现 `⋯ 18 lines 󰁂` 胶囊徽标。
+#   3. 按 `zp`：★ 核心特性！弹出一个浮动窗口，直接预览折叠内容，无需展开！
+#   4. 按 `zo`：重新展开当前代码块。
+#   5. 按 `zM`：一键收起全文所有类和函数，视野瞬间清爽。
+#   6. 按 `zR`：一键展开全文所有折叠。
 # ==============================================================================
-class NightBatchProcessor:
-    """夜间批处理作业执行器演示类。"""
+def long_calculation_algorithm(base_val: float, iterations: int = 100) -> float:
+    """这是一个用于演示折叠的长计算函数（按 zc 折叠我，按 zp 偷看我）。"""
+    accumulator = base_val
+    for step in range(1, iterations + 1):
+        # 内部多层逻辑
+        temp_factor = math.sin(step) * math.cos(step)
+        if step % 2 == 0:
+            accumulator += temp_factor * 1.5
+        else:
+            accumulator -= temp_factor * 0.8
+        # 累加校验
+        if accumulator > 10000.0:
+            accumulator = math.sqrt(accumulator)
+    return accumulator
 
-    def __init__(self, job_name: str, priority: int = 1) -> None:
-        self.job_name = job_name
-        self.priority = priority
-        self.is_running = False
-        self.processed_records: List[Dict[str, Any]] = []
 
-    def prepare_environment(self) -> bool:
-        """检查并准备批处理所需的本地与远程环境目录。"""
-        required_paths = [
-            "/tmp/night-batch/inbound",
-            "/tmp/night-batch/processing",
-            "/tmp/night-batch/archive",
-        ]
-        for path in required_paths:
-            # 模拟环境探测逻辑
-            if len(path) == 0:
-                return False
-        return True
+# ==============================================================================
+# 场景 04: 屏幕极速跳跃与直达 (flash.nvim)
+# ------------------------------------------------------------------------------
+# 【体验快捷键】：
+#   1. 普通模式下按下字母 `s`。
+#   2. 输入目标单词的前两个字母（例如跳到下方的 "TARGET_ALPHA"，输入 `ta`）。
+#   3. 屏幕上所有匹配位置会出现单字母跳转标签，按下对应字母光标瞬间瞬移过去！
+#   4. 按大写 `S`：启动基于 Treesitter 语法节点的范围跳转与选中！
+# ==============================================================================
+TARGET_ALPHA = "Jump here instantly with `s` then `ta`"
+TARGET_BRAVO = "Jump here instantly with `s` then `tb`"
+TARGET_CHARLIE = "Jump here instantly with `s` then `tc`"
 
-    def execute_batch_step(self, step_id: int, payload: Dict[str, Any]) -> Tuple[bool, str]:
-        """执行单个批处理事务步骤，带有详细的模拟耗时与异常捕获。"""
-        if not self.prepare_environment():
-            return False, "Environment check failed"
 
-        self.is_running = True
-        try:
-            # 模拟处理流水线
-            time.sleep(0.01)
-            record = {
-                "step": step_id,
-                "timestamp": time.time(),
-                "status": "COMPLETED",
-                "items_count": len(payload.keys()),
-            }
-            self.processed_records.append(record)
-            return True, f"Step {step_id} processed successfully"
-        except Exception as err:
-            return False, f"Unexpected error: {err}"
-        finally:
-            self.is_running = False
+# ==============================================================================
+# 场景 05: 搜索结果透镜与精确计数 (nvim-hlslens)
+# ------------------------------------------------------------------------------
+# 【体验快捷键】：
+#   1. 将光标放在下面的单词 `database_record` 上，按下 `*`（向后搜索当前词）。
+#   2. 观察每个匹配单词旁边自动浮现一个半透明透镜气泡：例如 `[1/6]`、`[2/6]`。
+#   3. 按 `n` 跳到下一个，按 `N` 跳到上一个，透镜随光标实时显示序号与相对距离！
+# ==============================================================================
+database_record_1 = {"id": 101, "table": "users", "active": True}
+database_record_2 = {"id": 102, "table": "orders", "active": True}
+database_record_3 = {"id": 103, "table": "logs", "active": False}
+database_record_4 = {"id": 104, "table": "audit", "active": True}
 
-    def generate_summary_report(self) -> Dict[str, Any]:
-        """汇总生成当前作业的统计摘要指标。"""
-        total = len(self.processed_records)
+
+# ==============================================================================
+# 场景 06: 增强文本对象操作 (mini.ai & nvim-treesitter-textobjects)
+# ------------------------------------------------------------------------------
+# 【体验快捷键】：
+#   不用手动数光标移动，用文本对象一键选择/删除/修改整个代码块：
+#   - 函数参数：光标放在 `arg_timeout` 上，按 `cia`（Change Inner Argument）直接改参数！
+#   - 函数整体：光标在函数内任意处，按 `vaf`（Visual Around Function）选中整个函数！
+#   - 函数内部：按 `vif` 仅选中函数体内部代码！
+#   - 括号/引号：按 `va"` 选中双引号及内容，按 `vi"` 仅选中引号内部！
+#   - 全文对象：按 `yag`（Yank Around Global）直接复制整个文件内容！
+# ==============================================================================
+def process_network_packet(
+    arg_client_ip: str,
+    arg_port_number: int,
+    arg_timeout: float = 30.0,
+    arg_retry_count: int = 3,
+) -> bool:
+    """体验 mini.ai 参数对象：把光标停在参数上试按 `vaa`、`cia`、`dia`。"""
+    log_message = "Processing packet from client endpoint"
+    if arg_port_number < 1024:
+        # 保护端口分支
+        return False
+    return True
+
+
+# ==============================================================================
+# 场景 07: 多光标并发编辑 (vim-visual-multi)
+# ------------------------------------------------------------------------------
+# 【体验快捷键】：
+#   1. 把光标放在下面第一行的 `batch_item` 上。
+#   2. 按 `Ctrl+n`：选中当前词。
+#   3. 再按 `Ctrl+n` 三次：同时选中接下来的第 2、3、4 行相同单词！
+#   4. 现在按 `c`（Change），输入 `task_unit`，按 `Esc`：4 行同时改好了！
+#   5. 垂直加光标：普通模式下按 `Ctrl+j` 向下加光标，`Ctrl+k` 向上加光标。
+# ==============================================================================
+batch_item_alpha = "queue_one"
+batch_item_beta = "queue_two"
+batch_item_gamma = "queue_three"
+batch_item_delta = "queue_four"
+
+
+# ==============================================================================
+# 场景 08: 剪贴板历史与循环粘贴 (yanky.nvim)
+# ------------------------------------------------------------------------------
+# 【体验快捷键】：
+#   1. 先用 `yy` 复制上方某一行，再用 `yy` 复制另一行（连续复制几次不同内容）。
+#   2. 在下方空行按 `p` 粘贴最近一次的内容。
+#   3. ★ 核心特性！按下 `[p` 或 `]p`：直接原地循环替换为上一次/更早复制的内容！
+#   4. 按 `<leader>fy`：使用 Telescope 弹窗浏览并选择全部历史剪贴板记录！
+# ==============================================================================
+# 在这里练习粘贴 -> 按 [p / ]p 轮换历史 -> 按 <leader>fy 搜索剪贴板：
+#
+
+
+# ==============================================================================
+# 场景 09: 代码大纲与符号导航 (aerial.nvim & contextline.nvim)
+# ------------------------------------------------------------------------------
+# 【体验快捷键】：
+#   1. 按 `<leader>cs`：在左侧打开符号大纲侧边栏，看到本文件的所有 Class 和 Function！
+#   2. 在大纲中按 `j`/`k` 移动，按 `<CR>` 编辑区直接跳转到对应代码。
+#   3. 观察编辑器底部状态栏：`contextline` 会实时显示您当前光标位于哪个函数或类内部。
+# ==============================================================================
+class NightBatchTrainingLab:
+    """夜间批处理综合实验类。用于测试符号大纲结构。"""
+
+    def __init__(self, lab_id: str = "LAB-01") -> None:
+        self.lab_id = lab_id
+        self.started_at = time.strftime("%Y-%m-%d %H:%M:%S")
+
+    def run_pre_check(self) -> bool:
+        """运行前置检查。"""
+        return os.path.exists("/tmp")
+
+    def execute_all_steps(self) -> Dict[str, Any]:
+        """批量调度全部步骤。"""
+        res = sample_rainbow_delimiters()
+        calc = long_calculation_algorithm(10.5, iterations=50)
         return {
-            "job": self.job_name,
-            "total_steps": total,
-            "success_rate": 100.0 if total > 0 else 0.0,
-            "theme_used": THEME_PALETTE["fresh_yellow"],
+            "lab": self.lab_id,
+            "status": "SUCCESS",
+            "calculation_result": calc,
+            "config": res,
         }
 
 
+# ==============================================================================
+# 场景 10: 智能补全与括号配对 (blink.cmp & mini.pairs)
+# ------------------------------------------------------------------------------
+# 【体验】：
+#   1. 在下方 `test_autocomplete` 函数内部另起一行。
+#   2. 输入 `lab = Night`：观察 blink.cmp 瞬间自动弹出包含图标的补全建议框！
+#   3. 输入 `(`：mini.pairs 自动为您补全 `)` 并将光标放在中间。
+#   4. 输入 `"`：自动补全双引号。
+# ==============================================================================
+def test_autocomplete():
+    # 试在下方输入 lab = Night... 并打点调出方法列表：
+    pass
+
+
+# ==============================================================================
+# 场景 11: Git 行尾 Blame 与专业 Diff (gitsigns.nvim & diffview.nvim)
+# ------------------------------------------------------------------------------
+# 【体验快捷键】：
+#   1. 光标停留在本文件任意行 300ms：行尾出现淡灰斜体 `tetsuya, <时间> • docs: ...`
+#   2. 按 `<leader>ub`：一键关闭 / 开启行尾 Blame 显示。
+#   3. 随便修改某一行代码，观察行号左侧立即出现彩色标记条 `▎`。
+#   4. 按 `<leader>gp`：悬浮弹窗预览刚才这一行的 Diff 修改！
+#   5. 按 `<leader>gd`：打开专业 Diffview 双屏并排比对工作区！
+#   6. 按 `<leader>gD`：查看本文件在 Git 历史中历次提交的完整快照！
+#   7. 按 `<leader>gq`：一键关闭 Diffview，瞬间返回此代码文件！
+# ==============================================================================
+
 if __name__ == "__main__":
-    processor = NightBatchProcessor("SETTLE_20260920", priority=1)
-    success, msg = processor.execute_batch_step(1, {"account": "001", "amount": 99.8})
-    print(f"[{processor.job_name}] Result: {msg}")
+    app = NightBatchTrainingLab()
+    output = app.execute_all_steps()
+    print(f"Playground execution complete: {output['status']}")
