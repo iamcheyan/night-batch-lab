@@ -1,17 +1,17 @@
-# Neovim 全套 40 个插件实战与练习全景手册 (Complete Neovim Plugins Guide)
+# Neovim 全套 41 个插件实战与练习全景手册 (Complete Neovim Plugins Guide)
 
 > 本仓库配套演练代码：[`examples/playground/main.py`](file:///home/tetsuya/development/night-batch-lab/examples/playground/main.py) 与 [`examples/ui_playground.py`](file:///home/tetsuya/development/night-batch-lab/examples/ui_playground.py)  
 > 🏆 **离线通关题库**：对照 [`WORKBOOK.md`](file:///home/tetsuya/development/night-batch-lab/WORKBOOK.md) 进行 32 道实战关卡逐题演练！  
 > 运行演练：`cd /home/tetsuya/development/night-batch-lab && nvim examples/playground/main.py`
 
-当前您的 Neovim 配置中一共安装并运行了 **40 个插件**（由 `Lazy.nvim` 统一管理）。  
-经过架构精简与去重，剔除了重叠的搜索与 Git 预览冗余，保留最纯粹高效的现代化工具链。本手册将这 40 个插件划分为 **8 大核心体系**，列出每个插件的作用、核心快捷键，并在代码文件中为您设计了对应的练习场景。
+当前您的 Neovim 配置中一共安装并运行了 **41 个插件**（由 `Lazy.nvim` 统一管理）。  
+经过架构精简与去重，剔除了重叠的搜索与 Git 预览冗余，保留最纯粹高效的现代化工具链。本手册将这 41 个插件划分为 **8 大核心体系**，列出每个插件的作用、核心快捷键，并在代码文件中为您设计了对应的练习场景。
 
 ---
 
 ## 目录索引
 1. [分类统计总览](#分类统计总览)
-2. [第一模块：代码编辑、文本对象与效率增强 (7 个)](#第一模块代码编辑文本对象与效率增强-7-个)
+2. [第一模块：代码编辑、文本对象与效率增强 (8 个)](#第一模块代码编辑文本对象与效率增强-8-个)
 3. [第二模块：外观、主题与界面美化 (7 个)](#第二模块外观主题与界面美化-7-个)
 4. [第三模块：模糊搜索、跳转与导航 (4 个)](#第三模块模糊搜索跳转与导航-4-个)
 5. [第四模块：文件管理与目录浏览 (2 个)](#第四模块文件管理与目录浏览-2-个)
@@ -27,7 +27,7 @@
 
 | 模块类别 | 插件数量 | 核心涵盖工具 |
 |---|:---:|---|
-| **代码编辑与文本对象** | 7 | `nvim-ufo`, `mini.ai`, `vim-visual-multi`, `yanky`, `mini.pairs`, `treesitter` 等 |
+| **代码编辑与文本对象** | 8 | `nvim-ufo`, `mini.ai`, `vim-visual-multi`, `yanky`, `ccc.nvim`, `mini.pairs`, `treesitter` 等 |
 | **外观与界面美化** | 7 | `satellite`, `rainbow-delimiters`, `mini.hipatterns`, `heirline`, `bufferline` 等 |
 | **搜索、跳转与导航** | 4 | `flash.nvim`, `aerial.nvim`, `nvim-hlslens`, `snacks.nvim (picker)` |
 | **文件浏览与管理** | 2 | `neo-tree.nvim`, `oil.nvim` |
@@ -35,7 +35,7 @@
 | **LSP 智能体与补全** | 6 | `blink.cmp`, `nvim-lspconfig`, `mason`, `conform.nvim`, `fidget` 等 |
 | **自研与私有扩展** | 5 | `contextline.nvim`, `VimQuest`, `which-key`, `auto-session`, `grug-far` |
 | **基础设施与依赖库** | 6 | `lazy.nvim`, `plenary`, `nui`, `sqlite.lua`, `promise-async` 等 |
-| **总计** | **40 个** | 极致精简，高内聚低冗余 |
+| **总计** | **41 个** | 极致精简，高内聚低冗余 |
 
 ## 🌟 跨文件多模块项目级实战演练 (Multi-File Realistic Architecture)
 
@@ -132,6 +132,14 @@ examples/playground/
   - `]m` / `[m`：跳到下一个 / 上一个方法（Method）的开头
   - `]M` / `[M`：跳到下一个 / 上一个方法的结尾
   - `]]` / `[[`：跳到下一个 / 上一个类的开头
+
+### 8. `ccc.nvim` (交互式调色板与颜色格式转换器)
+- **是什么**：交互式图形化滑块调色板，按需调出调整颜色值，并支持 HEX / RGB / HSL / OKLab 任意格式无缝互转。
+- **架构分工**：已将 `auto_enable` 高亮关闭（常驻颜色预览完全交给零依赖的 `mini.hipatterns`，无冲突），`ccc` 专注于交互式弹窗。
+- **快捷键与命令**：
+  - `<leader>cp` / `:CccPick`：光标停在颜色上，呼出交互式调色板滑块窗口，按 `h`/`l` 调色并回车替换
+  - `<leader>cC` / `:CccConvert`：光标停在颜色上，在 HEX、RGB、HSL 之间循环转换格式
+- **演练**：在 `ui_playground.py` 场景 01（第 35 行），光标停在 `#ffff00` 上按下 `<leader>cp` 体验调色。
 
 ---
 
@@ -340,6 +348,8 @@ examples/playground/
   cia / vaf / yag    修改参数 / 选中整个函数 / 复制全文 (Mini.ai)
   p 然后按 [p / ]p   ★ 粘贴并原地循环轮换剪贴板历史
   <leader>fy         ★ Snacks Picker 浏览全部剪贴板历史
+  <leader>cp         ★ 呼出交互式图形调色板滑块 (CccPick)
+  <leader>cC         十六进制/RGB/HSL 快速转换 (CccConvert)
   <leader>F          自动格式化当前文件 (Conform)
 
 【Git 工作流】
