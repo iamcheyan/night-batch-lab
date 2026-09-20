@@ -207,10 +207,12 @@ examples/playground/
   - `<leader>cs`：打开/关闭代码大纲侧边栏
 - **演练**：按 `<leader>cs` 呼出大纲，按 `j`/`k` 选中函数按回车。
 
-### 19. `snacks.nvim (Picker)` (现代化统一极速选择器)
-- **是什么**：基于 Snacks 现代化弹窗架构，完全替代旧版 Telescope。统一接管全局文件查找、缓冲区切换与剪贴板历史打捞。
+### 19. `snacks.nvim (Picker)` (现代化统一极速选择器与全文搜索)
+- **是什么**：基于 Snacks 现代化弹窗架构，统一接管全局文件查找、项目全局文本搜索 (Live Grep)、缓冲区切换与剪贴板历史打捞。
 - **快捷键**：
-  - `<leader><space>`：极速模糊搜索文件
+  - `<leader>/` 或 `<leader>sg` / `<leader>fg`：**全项目实时文本搜索 (Live Grep)**，秒级全文索引与右侧代码上下文实时预览
+  - `<leader>fw` 或 `<leader>sw` / `<leader>fc`：**搜索光标所在词 (Word under cursor)**，全项目查找该符号的所有引用
+  - `<leader><space>` 或 `<leader>ff`：极速模糊搜索文件 (Find Files)
   - `<leader>fy`：通过 sqlite 持久化数据库打捞并选择剪贴板历史
   - `<leader>,`：切换已打开的缓冲区列表
 
@@ -301,7 +303,8 @@ examples/playground/
 ### 36. `grug-far.nvim` (项目级超强全局批量正则查找与替换)
 - **是什么**：比 VSCode 全局替换更强大的两栏式正则搜索替换面板。
 - **快捷键**：
-  - `<leader>sr`：打开两栏批量替换面板（左侧输入匹配与替换规则，右侧实时预览受影响的所有文件，一键应用）
+  - `<leader>sr`：打开全项目交互式批量替换面板（左侧输入匹配与替换规则，右侧实时预览受影响的所有文件与行差异，一键应用）
+  - `<leader>sR`：仅在当前打开的文件内交互式批量替换
 
 ### 37. `VimQuest.nvim` (私有 Vim 闯关游戏)
 - **是什么**：私有游戏化练习插件，通过游戏闯关来熟悉 Vim 键位。
@@ -334,12 +337,17 @@ examples/playground/
   <leader>bd         关闭当前文件标签
   :vsplit            左右垂直分屏 (分割线已调为内敛柔和灰色)
 
-【屏幕跳跃与查找】
+【屏幕跳跃与文本搜索】
+  <leader>/          ★ 全工程实时文本内容搜索 Live Grep (Snacks Picker)
+  <leader>sg / <leader>fg 全工程文本搜索
+  <leader>fw / <leader>sw ★ 全工程搜索光标下的词 (Word under cursor)
+  <leader>sr         ★ 打开全工程交互式正则批量替换 (Grug-far)
+  <leader>sR         当前文件交互式正则批量替换 (Grug-far)
+  :grep <关键词>     Neovim 原生 ripgrep 搜索并载入 Quickfix (:copen)
   s + 2个字母        ★ Flash 屏幕极速瞬移
   *                  向后搜索当前词 (带 hlslens 计数透镜)
   n / N              跳到下一个 / 上一个搜索结果
   <leader>cs         开/关左侧代码函数与类大纲 (Aerial)
-  <leader>sr         打开项目级超级全局批量替换 (Grug-far)
 
 【代码折叠与编辑】
   zc / zo            折叠 / 展开当前代码块
