@@ -36,6 +36,48 @@
 | **基础设施与依赖库** | 6 | `lazy.nvim`, `plenary`, `nui`, `sqlite.lua`, `promise-async` 等 |
 | **总计** | **45 个** | 全部就绪，高度优化 |
 
+## 🌟 跨文件多模块项目级实战演练 (Multi-File Realistic Architecture)
+
+为了完美贴合真实开发环境，我们在 [`examples/playground/`](file:///home/tetsuya/development/night-batch-lab/examples/playground/) 下构建了一个完整的跨模块 Python 子工程：
+
+```text
+examples/playground/
+├── __init__.py    # 模块统一对外接口
+├── config.py      # 全局运行时配置、HEX 主题色盘 (#ffff00 等)
+├── models.py      # 领域数据模型 (dataclass)、状态枚举、彩虹嵌套数据结构
+├── engine.py      # 计算统计核心引擎 (包含长函数折叠、多光标编辑演练)
+├── service.py     # 业务调度编排服务 (多模块跨文件调用枢纽)
+└── main.py        # 可执行入口 (演练 cross-file LSP、多标签切换、工程全局替换)
+```
+
+### 推荐演练动线：
+
+1. **进入主入口**：
+   ```bash
+   cd /home/tetsuya/development/night-batch-lab
+   nvim examples/playground/main.py
+   ```
+2. **跨文件跳转定义 (`gd`)**：
+   - 将光标放在第 45 行的 `BatchOrchestratorService` 上，按下 **`gd`**！
+   - **效果**：Neovim 会瞬间跨文件打开并跳入 `service.py` 内部定位到类的声明！
+   - 在 `service.py` 内部，再把光标移到 `CalculationEngine` 上按 `gd`，瞬移跳入 `engine.py`！
+   - 在 `service.py` 中把光标移到 `COLOR_PALETTE` 上按 `gd`，瞬移跳入 `config.py`！
+3. **跨文件悬浮文档 (`K`)**：
+   - 在任意文件中，光标停在跨文件导入的类名、方法名或变量上按下大写 **`K`**。
+   - **效果**：屏幕中央弹出悬浮卡片，直接展示来自被引用文件里的 Docstring 与类型签名！
+4. **多文件标签极速切换 (`<S-h>` / `<S-l>`)**：
+   - 连续跳跃后，屏幕最上方的 `Bufferline` 会列出当前已打开的文件列表。
+   - 按 **`<S-h>`** 或 **`[b`**：向左切换上一个标签文件。
+   - 按 **`<S-l>`** 或 **`]b`**：向右切换下一个标签文件。
+   - 按 **`<leader>bd`**：关闭当前打开的文件标签，不破坏窗口分屏。
+5. **跨文件全局重命名 (`<leader>cr`)**：
+   - 将光标放在跨文件使用的函数（例如 `create_mock_pipeline`）上。
+   - 按 **`<leader>cr`**，输入新名字并回车。
+   - **效果**：基于 `basedpyright` LSP，所有引用该函数的关联文件全部自动同步修改！
+6. **项目级全局批量搜索与替换 (`<leader>sr` / `<leader>sg`)**：
+   - 按 **`<leader>sg`**：输入关键字（如 `fresh_yellow`），查看整个工程所有匹配文件。
+   - 按 **`<leader>sr`**：打开 `Grug-far` 两栏全局批量替换面板，实时预览所有文件的变动并一键应用。
+
 ---
 
 ## 第一模块：代码编辑、文本对象与效率增强 (8 个)

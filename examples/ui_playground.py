@@ -25,7 +25,32 @@ import math
 import os
 import sys
 import time
+from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
+
+CURRENT_DIR = Path(__file__).resolve().parent
+if str(CURRENT_DIR) not in sys.path:
+    sys.path.insert(0, str(CURRENT_DIR))
+
+# ==============================================================================
+# 场景 00: 跨文件 LSP 联动、定义跳转与文档悬浮 (LSP Navigation & Hover)
+# ------------------------------------------------------------------------------
+# 【体验 1 - 跨文件跳转定义 (gd)】：
+#   把光标放在下方的 `BatchOrchestratorService`、`CalculationEngine`、`COLOR_PALETTE`
+#   或者 `BatchTransactionRecord` 上，按 `gd`！
+#   -> Neovim 会瞬间打开并跳入 `playground/service.py`、`engine.py` 或 `models.py`！
+# 【体验 2 - 跨文件悬浮文档 (K)】：
+#   把光标放在这些跨模块类名上按 `K`，弹出的悬浮窗直接显示另一文件里的完整 Docstring！
+# 【体验 3 - 多文件标签极速切换】：
+#   跳入其他文件后，按 `<S-h>` / `<S-l>` 或 `[b` / `]b` 在不同文件标签之间流畅切换！
+# 【体验 4 - 跨文件重命名 (<leader>cr)】：
+#   在类名或函数上按 `<leader>cr`，整个工程关联文件同步重命名！
+# ==============================================================================
+from playground.config import COLOR_PALETTE as IMPORTED_PALETTE, GLOBAL_CONFIG
+from playground.engine import CalculationEngine
+from playground.models import BatchTransactionRecord, PipelineExecutionPlan
+from playground.service import BatchOrchestratorService
+
 
 
 # ==============================================================================
