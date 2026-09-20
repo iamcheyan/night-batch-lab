@@ -1,21 +1,21 @@
-# Neovim 全套 45 个插件实战与练习全景手册 (Complete Neovim Plugins Guide)
+# Neovim 全套 40 个插件实战与练习全景手册 (Complete Neovim Plugins Guide)
 
 > 本仓库配套演练代码：[`examples/playground/main.py`](file:///home/tetsuya/development/night-batch-lab/examples/playground/main.py) 与 [`examples/ui_playground.py`](file:///home/tetsuya/development/night-batch-lab/examples/ui_playground.py)  
 > 🏆 **离线通关题库**：对照 [`WORKBOOK.md`](file:///home/tetsuya/development/night-batch-lab/WORKBOOK.md) 进行 32 道实战关卡逐题演练！  
 > 运行演练：`cd /home/tetsuya/development/night-batch-lab && nvim examples/playground/main.py`
 
-当前您的 Neovim 配置中一共安装并运行了 **45 个插件**（由 `Lazy.nvim` 统一管理）。  
-为了让您不再“装了好多插件却不知道怎么用”，本手册将这 45 个插件划分为 **8 大核心体系**，列出每个插件的作用、核心快捷键，并在代码文件中为您设计了对应的练习场景。
+当前您的 Neovim 配置中一共安装并运行了 **40 个插件**（由 `Lazy.nvim` 统一管理）。  
+经过架构精简与去重，剔除了重叠的搜索与 Git 预览冗余，保留最纯粹高效的现代化工具链。本手册将这 40 个插件划分为 **8 大核心体系**，列出每个插件的作用、核心快捷键，并在代码文件中为您设计了对应的练习场景。
 
 ---
 
 ## 目录索引
 1. [分类统计总览](#分类统计总览)
-2. [第一模块：代码编辑、文本对象与效率增强 (8 个)](#第一模块代码编辑文本对象与效率增强-8-个)
-3. [第二模块：外观、主题与界面美化 (8 个)](#第二模块外观主题与界面美化-8-个)
+2. [第一模块：代码编辑、文本对象与效率增强 (7 个)](#第一模块代码编辑文本对象与效率增强-7-个)
+3. [第二模块：外观、主题与界面美化 (7 个)](#第二模块外观主题与界面美化-7-个)
 4. [第三模块：模糊搜索、跳转与导航 (4 个)](#第三模块模糊搜索跳转与导航-4-个)
 5. [第四模块：文件管理与目录浏览 (2 个)](#第四模块文件管理与目录浏览-2-个)
-6. [第五模块：Git 版本控制与全景对比 (4 个)](#第五模块git-版本控制与全景对比-4-个)
+6. [第五模块：Git 版本控制与全景对比 (3 个)](#第五模块git-版本控制与全景对比-3-个)
 7. [第六模块：LSP 智能补全、诊断与格式化 (6 个)](#第六模块lsp-智能补全诊断与格式化-6-个)
 8. [第七模块：自研与私有专属插件 (5 个)](#第七模块自研与私有专属插件-5-个)
 9. [第八模块：底层基础设施与依赖库 (6 个)](#第八模块底层基础设施与依赖库-6-个)
@@ -27,15 +27,15 @@
 
 | 模块类别 | 插件数量 | 核心涵盖工具 |
 |---|:---:|---|
-| **代码编辑与文本对象** | 8 | `nvim-ufo`, `mini.ai`, `vim-visual-multi`, `yanky`, `mini.pairs`, `treesitter` 等 |
-| **外观与界面美化** | 8 | `satellite`, `rainbow-delimiters`, `mini.hipatterns`, `heirline`, `bufferline` 等 |
-| **搜索、跳转与导航** | 4 | `flash.nvim`, `telescope`, `aerial.nvim`, `nvim-hlslens` |
+| **代码编辑与文本对象** | 7 | `nvim-ufo`, `mini.ai`, `vim-visual-multi`, `yanky`, `mini.pairs`, `treesitter` 等 |
+| **外观与界面美化** | 7 | `satellite`, `rainbow-delimiters`, `mini.hipatterns`, `heirline`, `bufferline` 等 |
+| **搜索、跳转与导航** | 4 | `flash.nvim`, `aerial.nvim`, `nvim-hlslens`, `snacks.nvim (picker)` |
 | **文件浏览与管理** | 2 | `neo-tree.nvim`, `oil.nvim` |
-| **Git 版本控制** | 4 | `diffview.nvim`, `gitsigns.nvim`, `hunk-review.nvim`, `snacks.nvim (lazygit)` |
+| **Git 版本控制** | 3 | `diffview.nvim`, `gitsigns.nvim`, `snacks.nvim (lazygit)` |
 | **LSP 智能体与补全** | 6 | `blink.cmp`, `nvim-lspconfig`, `mason`, `conform.nvim`, `fidget` 等 |
 | **自研与私有扩展** | 5 | `contextline.nvim`, `VimQuest`, `which-key`, `auto-session`, `grug-far` |
 | **基础设施与依赖库** | 6 | `lazy.nvim`, `plenary`, `nui`, `sqlite.lua`, `promise-async` 等 |
-| **总计** | **45 个** | 全部就绪，高度优化 |
+| **总计** | **40 个** | 极致精简，高内聚低冗余 |
 
 ## 🌟 跨文件多模块项目级实战演练 (Multi-File Realistic Architecture)
 
@@ -116,7 +116,7 @@ examples/playground/
 - **快捷键**：
   - `p`：正常粘贴
   - `[p` / `]p`：★ **循环轮换**：粘贴后立刻按 `[p` 或 `]p`，粘贴出来的文字会原地轮流切换为你之前复制过的其他历史！
-  - `<leader>fy`：通过 Telescope 弹窗浏览并选择全部剪贴板历史
+  - `<leader>fy`：通过 Snacks Picker 极速弹窗浏览并选择全部剪贴板历史
 - **演练**：在 `ui_playground.py` 场景 08（第 170 行），随便 `yy` 复制两句不同的话，到下方按 `p` 然后狂按 `[p`。
 
 ### 5. `mini.pairs` (智能括号引号配对)
@@ -133,16 +133,9 @@ examples/playground/
   - `]M` / `[M`：跳到下一个 / 上一个方法的结尾
   - `]]` / `[[`：跳到下一个 / 上一个类的开头
 
-### 8. `ccc.nvim` (颜色拾取器与转换器)
-- **是什么**：在代码里交互式选颜色或转换颜色格式。
-- **命令**：
-  - `:CccPick`：光标停在颜色上，弹出可视化调色板滑块
-  - `:CccConvert`：在 HEX、RGB、HSL 之间快速互转
-- **演练**：在 `ui_playground.py` 场景 01（第 35 行），光标停在 `#ffff00` 上输入 `:CccPick`。
-
 ---
 
-## 第二模块：外观、主题与界面美化 (8 个)
+## 第二模块：外观、主题与界面美化 (7 个)
 
 ### 9. `satellite.nvim` (传统 UI 经典右侧滚动条)
 - **是什么**：在窗口右边缘渲染带有深灰连续轨道（`#25252a`）和亮黄滑块（`#ffff00`）的滚动条，彻底解决透明滚动条覆盖背景的杂乱感。
@@ -181,51 +174,49 @@ examples/playground/
 ### 15. `indent-blankline.nvim` (ibl - 缩进指引线)
 - **是什么**：在代码缩进处绘制纤细的垂直参考线，嵌套逻辑对齐一目了然。
 
-### 16. `cyberdream.nvim` (备选赛博朋克主题)
-- **是什么**：仓库备用的高品质赛博朋克深色主题（当前主力默认是 1:1 移植的 `high-contrast-plus`）。
-
 ---
 
 ## 第三模块：模糊搜索、跳转与导航 (4 个)
 
-### 17. `flash.nvim` (屏幕极速跳跃 - 键位神技)
+### 16. `flash.nvim` (屏幕极速跳跃 - 键位神技)
 - **是什么**：彻底告别狂按 `h/j/k/l` 或 `w/b` 移动光标。按 `s` 后输入目标两个字母，立刻瞬移到屏幕任意角落。
 - **快捷键**：
   - `s`：启动 Flash 跳转（输入 2 个字母，然后按提示字母跳跃）
   - `S`：启动 Treesitter 语法块范围跳跃与选中
 - **演练**：在 `ui_playground.py` 场景 04（第 108 行），按 `s` 然后输 `ta` 直达 `TARGET_ALPHA`！
 
-### 18. `nvim-hlslens` (搜索结果透镜)
+### 17. `nvim-hlslens` (搜索结果透镜)
 - **是什么**：按 `/` 搜文本或按 `*` 搜当前词时，在每一个匹配项右侧显示气泡透镜 `[当前序号/总匹配数]`。
 - **快捷键**：
   - `*`：向后搜索光标下的词（自动激活透镜）
   - `n` / `N`：下一个 / 上一个搜索结果
 - **演练**：在 `ui_playground.py` 场景 05（第 119 行），光标停在 `database_record_1` 上按 `*`。
 
-### 19. `aerial.nvim` (代码大纲与符号侧边栏)
+### 18. `aerial.nvim` (代码大纲与符号侧边栏)
 - **是什么**：在侧边栏树形展示当前文件的所有类、方法、函数、变量大纲，回车直接跳转。
 - **快捷键**：
   - `<leader>cs`：打开/关闭代码大纲侧边栏
 - **演练**：按 `<leader>cs` 呼出大纲，按 `j`/`k` 选中函数按回车。
 
-### 20. `telescope.nvim` (经典模糊搜索框架)
-- **是什么**：Neovim 社区最著名的弹窗模糊搜索器，底层接入 `telescope-fzf-native` 实现瞬时检索。
+### 19. `snacks.nvim (Picker)` (现代化统一极速选择器)
+- **是什么**：基于 Snacks 现代化弹窗架构，完全替代旧版 Telescope。统一接管全局文件查找、缓冲区切换与剪贴板历史打捞。
 - **快捷键**：
-  - `<leader>fy`：搜索剪贴板历史
-  - `<leader>fF` / `:Telescope`：打开 Telescope 命令行模式
+  - `<leader><space>`：极速模糊搜索文件
+  - `<leader>fy`：通过 sqlite 持久化数据库打捞并选择剪贴板历史
+  - `<leader>,`：切换已打开的缓冲区列表
 
 ---
 
 ## 第四模块：文件管理与目录浏览 (2 个)
 
-### 21. `neo-tree.nvim` (经典侧边栏文件树)
+### 20. `neo-tree.nvim` (经典侧边栏文件树)
 - **是什么**：类似 VSCode 的左侧项目工程树。
 - **快捷键**：
   - `<leader>e`：打开/收起左侧文件树
   - `<leader>ge`：打开仅显示 Git 修改文件的树状图
   - 在树内按 `a` 新建文件，`d` 删除，`r` 重命名，`?` 查看帮助
 
-### 22. `oil.nvim` (像编辑文本一样管理文件目录)
+### 21. `oil.nvim` (像编辑文本一样管理文件目录)
 - **是什么**：把文件目录当成一个普通文本 buffer 来编辑！想重命名？直接修改那行文字按 `:w`！想新建文件？随便加一行文字按 `:w`！
 - **快捷键**：
   - `-`：直接在当前窗口打开父级目录
@@ -233,9 +224,9 @@ examples/playground/
 
 ---
 
-## 第五模块：Git 版本控制与全景对比 (4 个)
+## 第五模块：Git 版本控制与全景对比 (3 个)
 
-### 23. `diffview.nvim` (专业级双屏 Git 对比工作区)
+### 22. `diffview.nvim` (专业级双屏 Git 对比工作区)
 - **是什么**：全功能 Git Diff 工作区，带左侧文件列表与右侧双屏左右对比，免除命令行 `git diff` 繁琐。
 - **快捷键**：
   - `<leader>gd` 或 `<leader>gv`：**打开 Diffview 工作区**
@@ -243,7 +234,7 @@ examples/playground/
   - `<leader>gV`：**查看整仓分支提交记录 (Branch History)**
   - `<leader>gq`：**一键退出关闭 Diffview**
 
-### 24. `gitsigns.nvim` (行尾 Blame 与单行修改追踪)
+### 23. `gitsigns.nvim` (行尾 Blame 与单行修改追踪)
 - **是什么**：Sign 列着色修改条，300ms 自动在行尾浮现浅灰色的提交人与 Commit 信息。
 - **快捷键**：
   - `<leader>ub`：★ **一键开/关行尾 Blame 显示**
@@ -251,10 +242,7 @@ examples/playground/
   - `<leader>gp`：悬浮窗口预览当前修改块的具体变动
   - `<leader>gs` / `<leader>gr`：暂存 / 撤销恢复当前修改块
 
-### 25. `hunk-review.nvim` (交互式 Hunk 审查浮窗)
-- **快捷键**：`<leader>gH`：以大屏浮窗形式逐个审查当前未提交的代码变动。
-
-### 26. `snacks.nvim` - Git 集成 (终端 LazyGit)
+### 24. `snacks.nvim` - Git 集成 (终端 LazyGit)
 - **快捷键**：
   - `<leader>gg`：在 Neovim 内部直接呼出完整的终端图形化 **Lazygit**！
   - 同样可以用 `<leader><space>` 快速搜索全局文件。
@@ -315,14 +303,12 @@ examples/playground/
 ## 第八模块：底层基础设施与依赖库 (6 个)
 
 虽然平时无需直接操作，但它们支撑了上述全部功能的高速运转：
-38. **`lazy.nvim`**：现代 Neovim 插件管理核心。输入 `:Lazy` 查看全部 45 个插件的加载耗时与运行状态。
-39. **`plenary.nvim`**：Lua 异步与通用函数工具库。
-40. **`nui.nvim`**：弹出窗、布局与组件基础库。
-41. **`promise-async`**：异步协程 Promise 调度器（供 `nvim-ufo` 极速折叠）。
-42. **`sqlite.lua`**：本地 SQLite 数据库绑定（供 `yanky` 剪贴板永久存储）。
-43. **`telescope-fzf-native.nvim`**：C 语言编写的原生高性能模糊匹配算法动态链接库。
-44. **`cobol.nvim`**：本地私有 COBOL 语言语法分析扩展。
-45. **`batch.nvim`**：本地私有 Windows Batch 脚本语法高亮与语法规则支持。
+35. **`lazy.nvim`**：现代 Neovim 插件管理核心。输入 `:Lazy` 查看全部 40 个插件的加载耗时与运行状态。
+36. **`plenary.nvim`**：Lua 异步与通用函数工具库。
+37. **`nui.nvim`**：弹出窗、布局与组件基础库。
+38. **`promise-async`**：异步协程 Promise 调度器（供 `nvim-ufo` 极速折叠）。
+39. **`sqlite.lua`**：本地 SQLite 数据库绑定（供 `yanky` 剪贴板永久存储）。
+40. **`batch.nvim`** / **`cobol.nvim`**：本地私有专用语言语法高亮与语法规则支持。
 
 ---
 
@@ -353,7 +339,7 @@ examples/playground/
   Ctrl+n             ★ 多光标选中下一个相同词进行并发编辑 (按 c 修改)
   cia / vaf / yag    修改参数 / 选中整个函数 / 复制全文 (Mini.ai)
   p 然后按 [p / ]p   ★ 粘贴并原地循环轮换剪贴板历史
-  <leader>fy         Telescope 浏览全部剪贴板历史
+  <leader>fy         ★ Snacks Picker 浏览全部剪贴板历史
   <leader>F          自动格式化当前文件 (Conform)
 
 【Git 工作流】
