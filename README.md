@@ -84,6 +84,12 @@ continue-on-error behavior, per-job status records, logs, output archiving,
 and explicit failure codes. These are intentionally included as editor and
 plugin test cases, not as a recommendation to copy production credentials.
 
+Both Windows entry points load `windows-batch/night-batch.conf`. The shared
+loader imports `NIGHT_*` and `CSV2XLS_*` settings for paths, child programs,
+the converter, and upload policy. Use `@ROOT@` and `@DATE@` in paths, or pass
+an external `.conf` file when a site-specific executable or directory layout
+is needed. The committed file contains no FTP credentials.
+
 For the ten-file conversion exercise, set the converter and upload mode as
 appropriate:
 
@@ -133,6 +139,10 @@ open them in Neovim to exercise Tree-sitter parsing and the generic
 workflow. See [Editor context fixtures](docs/08-editor-context-fixtures.md).
 
 For a complete hands-on interactive tutorial and offline practice quest covering all 41 Neovim plugins, see [TUTORIAL_UI.md](TUTORIAL_UI.md) and [WORKBOOK.md](WORKBOOK.md) (paired with `examples/playground/` and `examples/ui_playground.py`).
+
+For a self-contained COBOL learning path with lessons, a question bank, runnable
+exercises, and `cobol.nvim` practice prompts, see
+[cobol-workbook/README.md](cobol-workbook/README.md).
 
 ## Safety
 

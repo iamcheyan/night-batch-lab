@@ -15,12 +15,27 @@ if /I "%~1"=="/?" goto :usage
 if /I "%~1"=="help" goto :usage
 
 set "ROOT=%~dp0.."
-set "CSV_DIR=%ROOT%\data\input\csv"
-set "XLS_DIR=%ROOT%\data\output\xls"
-set "SIMULATED_REMOTE=%ROOT%\data\remote\linux"
-set "ARCHIVE_ROOT=%ROOT%\data\archive\csv2xls"
-set "LOG_DIR=%ROOT%\logs"
-set "STATUS_DIR=%ROOT%\data\status"
+set "CONFIG_FILE=%~dp0night-batch.conf"
+call "%~dp0load-config.bat" "%CONFIG_FILE%"
+if errorlevel 1 (
+  echo 設定ファイルを読み込めません: %CONFIG_FILE%
+  exit /b 10
+)
+if not "%~2"=="" (
+  set "CONFIG_FILE=%~2"
+  call "%~dp0load-config.bat" "%CONFIG_FILE%"
+  if errorlevel 1 (
+    echo 外部設定ファイルを読み込めません: %CONFIG_FILE%
+    exit /b 10
+  )
+)
+set "ROOT=%NIGHT_ROOT%"
+set "CSV_DIR=%CSV2XLS_CSV_DIR%"
+set "XLS_DIR=%CSV2XLS_XLS_DIR%"
+set "SIMULATED_REMOTE=%CSV2XLS_REMOTE_DIR%"
+set "ARCHIVE_ROOT=%CSV2XLS_ARCHIVE_ROOT%"
+set "LOG_DIR=%CSV2XLS_LOG_DIR%"
+set "STATUS_DIR=%CSV2XLS_STATUS_DIR%"
 
 set "BUSINESS_DATE=%~1"
 if "%BUSINESS_DATE%"=="" set "BUSINESS_DATE=%DATE:~0,4%%DATE:~5,2%%DATE:~8,2%"
@@ -29,18 +44,17 @@ set "STATUS_FILE=%STATUS_DIR%\csv2xls-%BUSINESS_DATE%.status"
 set "ARCHIVE_DIR=%ARCHIVE_ROOT%\%BUSINESS_DATE%"
 
 rem Place the site-provided converter here, or override this variable.
-set "CSV2XLS_JS=%CSV2XLS_JS%"
-if "%CSV2XLS_JS%"=="" set "CSV2XLS_JS=%~dp0CSV2XLS.js"
+set "CSV2XLS_JS=%CSV2XLS_CONVERTER%"
 
 rem simulate is safe for this training repository.
 rem ftp uses the traditional Windows ftp.exe command file.
-if "%UPLOAD_MODE%"=="" set "UPLOAD_MODE=simulate"
-if "%CONTINUE_ON_ERROR%"=="" set "CONTINUE_ON_ERROR=N"
-if "%OVERWRITE_OUTPUT%"=="" set "OVERWRITE_OUTPUT=Y"
-if "%FTP_HOST%"=="" set "FTP_HOST="
-if "%FTP_USER%"=="" set "FTP_USER="
-if "%FTP_PASSWORD%"=="" set "FTP_PASSWORD="
-if "%FTP_TARGET%"=="" set "FTP_TARGET="
+set "UPLOAD_MODE=%CSV2XLS_UPLOAD_MODE%"
+set "CONTINUE_ON_ERROR=%CSV2XLS_CONTINUE_ON_ERROR%"
+set "OVERWRITE_OUTPUT=%CSV2XLS_OVERWRITE_OUTPUT%"
+set "FTP_HOST=%CSV2XLS_FTP_HOST%"
+set "FTP_USER=%CSV2XLS_FTP_USER%"
+set "FTP_PASSWORD=%CSV2XLS_FTP_PASSWORD%"
+set "FTP_TARGET=%CSV2XLS_FTP_TARGET%"
 
 set /a SUCCESS_COUNT=0
 set /a ERROR_COUNT=0

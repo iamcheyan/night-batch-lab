@@ -32,6 +32,39 @@ set OVERWRITE_OUTPUT=N
 set UPLOAD_MODE=simulate
 ```
 
+## Shared `.conf` configuration
+
+Both Windows entry points load `windows-batch/night-batch.conf` through the
+shared `windows-batch/load-config.bat` loader. The file uses one `KEY=VALUE`
+pair per line. `NIGHT_*` keys configure `nightly-main.bat`; `CSV2XLS_*` keys
+configure the ten-file conversion job. This gives one file control over
+directories, the COBOL executable, child Batch programs, the converter, and
+the upload policy.
+
+Paths can use `@ROOT@` for the repository directory and `@DATE@` for the
+business date. For example:
+
+```text
+NIGHT_COBOL_EXE=C:\tools\nightsettle.exe
+NIGHT_LOG_DIR=@ROOT@\logs\nightly
+CSV2XLS_UPLOAD_MODE=simulate
+CSV2XLS_OVERWRITE_OUTPUT=N
+```
+
+The default file is loaded automatically. A different file can be supplied as
+an override; it is loaded after the default, so it only needs to contain the
+settings that differ. Pass it as the first argument to `nightly-main.bat`, or
+as the second argument to `csv2xls-upload.bat`:
+
+```bat
+windows-batch\nightly-main.bat C:\ops\night-batch.conf
+windows-batch\csv2xls-upload.bat 20260919 C:\ops\night-batch.conf
+```
+
+The loader accepts only the two documented prefixes and the repository keeps
+FTP values blank. Put approved connection values in an external config file;
+never commit credentials or production hostnames.
+
 The script writes a dated log, a per-job status file, and an archive containing
 the input CSV and generated XLS. This makes it useful for testing COBOL-aware
 statusline, folding, navigation, completion, and diagnostics behavior in the

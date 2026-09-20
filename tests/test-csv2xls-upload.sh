@@ -23,6 +23,9 @@ assert_contains 'if /I "%UPLOAD_MODE%"=="ftp" goto :upload_ftp'
 assert_contains 'ftp -n -s:"%FTP_COMMAND_FILE%"'
 assert_contains 'if /I "%OVERWRITE_OUTPUT%"=="N" if exist "%XLS_FILE%" ('
 assert_contains 'if errorlevel 1 if /I not "%CONTINUE_ON_ERROR%"=="Y" goto :job_error'
+assert_contains 'call "%~dp0load-config.bat" "%CONFIG_FILE%"'
+assert_contains 'set "CSV_DIR=%CSV2XLS_CSV_DIR%"'
+assert_contains 'set "CSV2XLS_JS=%CSV2XLS_CONVERTER%"'
 
 explicit_calls="$(grep -Ec '^call :process_job 00000000[1-9]$|^call :process_job 000000010$' "$script")"
 if [[ "$explicit_calls" -ne 10 ]]; then

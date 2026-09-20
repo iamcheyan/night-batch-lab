@@ -1,0 +1,14 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. AMOUNT-CHECK.
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+       01  WS-AMOUNT PIC 9(08) VALUE 250.
+       01  WS-LIMIT  PIC 9(08) VALUE 100.
+       PROCEDURE DIVISION.
+           IF WS-AMOUNT > WS-LIMIT
+               DISPLAY "OVER-LIMIT"
+           ELSE
+               DISPLAY "WITHIN-LIMIT"
+           END-IF
+           GOBACK.
+
