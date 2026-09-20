@@ -233,18 +233,19 @@ cd /home/tetsuya/development/night-batch-lab
 
 ## 第四关：折叠与视觉透视篇
 
-### 第 16 题：胶囊徽标折叠初体验 (Ufo Fold with Badge)
-- **考查点**：现代折叠与语法保留 (`nvim-ufo` 的 `zc` / `zo`)
+### 第 16 题：行号折叠三角与鼠标点击交互 (Ufo Statuscolumn Fold Triangle)
+- **考查点**：IDE 级行号折叠指示器与鼠标点击直接折叠 (`snacks.statuscolumn` + `nvim-ufo`)
 - **目标文件**：`examples/playground/engine.py`
-- **任务目标**：将冗长复杂的计算函数折叠为一行。
+- **任务目标**：体验像 VSCode/IDE 一样在行号旁观察折叠三角，并直接用鼠标点击展开/折叠。
 - **操作步骤**：
-  1. 打开 `engine.py`，定位到第 33 行的 `def compute_statistical_metrics`。
-  2. 确保光标在该 `def` 这一行上，按按键：**`zc`**。
+  1. 打开 `engine.py`，观察屏幕左侧行号区域：
+     - 在可以折叠的行（如第 33 行 `def compute_statistical_metrics`）旁侧，出现了一个小三角指示器 **``**！
+  2. 拿起鼠标，**直接移动鼠标指针点击左侧行号旁的 `` 三角图标**！
   3. 观察折叠后的视觉呈现：
-     - `def compute_statistical_metrics(...)` 依然保留高亮的青色/黄色语法色彩！
-     - 这一行的右侧显示出一个精美的胶囊徽标：`⋯ 36 lines 󰁂`。
-  4. 按 **`zo`** 重新展开。
-- **通关验证**：折叠美观优雅，行数清晰可见。
+     - 函数被瞬间折叠，三角箭头变为向右的折叠状态 **``**！
+     - 这一行的右侧显示出精美的胶囊徽标：`⋯ 36 lines 󰁂`。
+  4. 再次用鼠标点击向右的三角 **``**（或按下按键 `zo`）。
+- **通关验证**：无需键盘命令，鼠标单次点击直接实现现代 IDE 级别的代码块折叠与展开！
 
 ---
 
